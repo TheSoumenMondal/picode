@@ -11,14 +11,14 @@
   box-shadow: none !important;
 }
 
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
 
 @theme inline {
   --color-background: var(--background);

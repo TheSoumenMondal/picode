@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <div
       className="w-full h-14 flex items-center justify-between px-6
-      backdrop-blur-lg"
+      backdrop-blur-lg border-b"
     >
       <Link href={"/"} className="text-sm font-bold">
         picode

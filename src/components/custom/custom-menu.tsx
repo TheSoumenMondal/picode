@@ -121,7 +121,7 @@ const CustomMenu = () => {
           Export
         </Button>
         <Button size="sm" className="cursor-pointer w-full" variant="secondary">
-          Export
+          Reset
         </Button>
       </div>
 

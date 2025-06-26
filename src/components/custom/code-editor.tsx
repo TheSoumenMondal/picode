@@ -34,44 +34,42 @@ import {
 
 import { loadLanguage } from "@uiw/codemirror-extensions-langs";
 import { EditorView } from "@codemirror/view";
-import { codeSnippets } from "@/lib/codeSnippets";
 import { useThemeStore } from "@/store/store";
 import { CodeMirrorThemeBackGroundGroup } from "@/lib/themes";
 
 const CodeEditor = () => {
-  const { backgroundTheme, language, title, setTitle, lineNumber } =
-    useThemeStore();
-
-  const [code, setCode] = useState(() => {
-    const snippet = codeSnippets.find((s) => s.language === language);
-    return snippet?.code || "";
-  });
+  const {
+    backgroundTheme,
+    language,
+    title,
+    setTitle,
+    lineNumber,
+    code,
+    setCode,
+  } = useThemeStore();
 
   const [backgroundColor, setBackGroundColor] = useState<string>("#1e1e1e");
   const [titleThemeType, setTitleThemeType] = useState<"dark" | "light">(
     "dark"
   );
   const [editorTheme, setEditorTheme] = useState<Extension>(vscodeDark);
-  const [localTitle, setLocalTitle] = useState(title);
+
   const editorRef = useRef<HTMLDivElement>(null);
 
-  // Update title
-  useEffect(() => {
-    setLocalTitle(title);
-  }, [title]);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setTitle(localTitle);
+  const debouncedSaveCode = (value: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setCode(value);
     }, 300);
-    return () => clearTimeout(handler);
-  }, [localTitle, setTitle]);
+  };
 
-  // Update theme and background
   useEffect(() => {
     const selectedTheme = CodeMirrorThemeBackGroundGroup.find(
       (item) => item.theme === backgroundTheme
     );
+
     if (selectedTheme) {
       setBackGroundColor(selectedTheme.bg);
       setTitleThemeType(selectedTheme.type);
@@ -109,18 +107,10 @@ const CodeEditor = () => {
     setEditorTheme(themeMap[backgroundTheme] ?? oneDark);
   }, [backgroundTheme]);
 
-  // Update code when language changes
-  useEffect(() => {
-    const snippet = codeSnippets.find((s) => s.language === language);
-    setCode(snippet?.code || "");
-  }, [language]);
-
-  const languageExtension = loadLanguage(language as any);
-
   return (
     <div
       className={cn(
-        "min-w-[400px] w-[500px] rounded-xl shadow-2xl border border-white/20"
+        "min-w-[400px] rounded-xl shadow-2xl border border-white/20"
       )}
       style={{ backgroundColor }}
     >
@@ -133,8 +123,8 @@ const CodeEditor = () => {
         <div className="col-span-4 flex justify-center">
           <input
             type="text"
-            value={localTitle}
-            onChange={(e) => setLocalTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             spellCheck={false}
             onClick={(e: any) => e.target.select()}
             className={`bg-transparent text-center focus:outline-none text-sm font-medium w-full ${
@@ -148,9 +138,9 @@ const CodeEditor = () => {
         <CodeMirror
           theme={editorTheme}
           value={code}
-          onChange={(value) => setCode(value)}
+          onChange={debouncedSaveCode}
           extensions={[
-            ...(languageExtension ? [languageExtension] : []),
+            loadLanguage(language as any) as any,
             EditorView.lineWrapping,
             EditorView.theme({
               "&": {
