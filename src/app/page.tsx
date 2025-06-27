@@ -121,7 +121,11 @@ export default function PiCodeLanding() {
             className="flex gap-2 flex-col w-full sm:flex-row items-center justify-center"
           >
             <Link href={"/create"} className="w-full sm:w-fit">
-              <Button className="bg-gradient-to-r w-full from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white md:w-auto gap-0 cursor-pointer">
+              <Button
+                variant={"outline"}
+                size={"lg"}
+                className="w-full md:w-auto gap-0 cursor-pointer"
+              >
                 Start creating now
                 <IconChevronRight className="w-4 h-4" />
               </Button>
@@ -130,7 +134,11 @@ export default function PiCodeLanding() {
               className="w-full sm:w-fit"
               href={"https://github.com/TheSoumenMondal/picode"}
             >
-              <Button variant={"outline"} className="group w-full sm:w-fit cursor-pointer">
+              <Button
+                size={"lg"}
+                variant={"outline"}
+                className="group w-full sm:w-fit cursor-pointer"
+              >
                 <IconStarFilled className="w-4 h-4 group-hover:animate-spin text-yellow-400" />
                 Star on Github
               </Button>
@@ -163,7 +171,10 @@ export default function PiCodeLanding() {
                 </div>
                 <div className="ml-4">
                   return{" "}
-                  <span className="text-green-400">&apos;Beautiful Code&apos;</span>;
+                  <span className="text-green-400">
+                    &apos;Beautiful Code&apos;
+                  </span>
+                  ;
                 </div>
                 <div>{"}"}</div>
               </pre>
