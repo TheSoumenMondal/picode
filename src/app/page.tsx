@@ -163,7 +163,7 @@ export default function PiCodeLanding() {
                 </div>
                 <div className="ml-4">
                   return{" "}
-                  <span className="text-green-400">'Beautiful Code'</span>;
+                  <span className="text-green-400">&apos;Beautiful Code&apos;</span>;
                 </div>
                 <div>{"}"}</div>
               </pre>
