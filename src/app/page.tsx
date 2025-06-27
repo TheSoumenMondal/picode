@@ -4,15 +4,25 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
 import Navbar from "@/components/custom/navbar";
 import Link from "next/link";
-import { IconSparkles } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconSparkles,
+  IconStarFilled,
+} from "@tabler/icons-react";
+import { useTheme } from "next-themes";
 
 export default function PiCodeLanding() {
   const [particles, setParticles] = useState<
     { left: number; top: number; duration: number; delay: number }[]
   >([]);
+
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    setTheme("dark");
+  }, []);
 
   useEffect(() => {
     const generated = Array.from({ length: 20 }).map(() => ({
@@ -25,7 +35,7 @@ export default function PiCodeLanding() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white relative overflow-hidden select-none">
       {/* Outer vignette */}
       <div className="absolute inset-0 z-0 bg-black">
         <div className="w-full h-full bg-gradient-to-r from-black via-transparent to-black opacity-80" />
@@ -76,13 +86,13 @@ export default function PiCodeLanding() {
           >
             <Badge className="bg-gradient-to-r from-orange-500/40 to-pink-500/40 border-orange-500/80 text-orange-200 rounded-full px-2.5 py-1.5 text-xs backdrop-blur-sm">
               <IconSparkles className="w-4 h-4 mr-2" />
-              Design stunning code shots effortlessly
+              Design code screenshots effortlessly
             </Badge>
           </motion.div>
 
           {/* Heading */}
           <motion.h1
-            className="text-4xl md:text-5xl max-w-2xl font-semibold bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight"
+            className="text-4xl md:text-5xl max-w-2xl font-semibold bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight tracking-tight"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
@@ -108,13 +118,21 @@ export default function PiCodeLanding() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.4 }}
+            className="flex gap-2 flex-col w-full sm:flex-row items-center justify-center"
           >
-            <Link href={"/create"}>
-              <Button
-                size="sm"
-                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white"
-              >
+            <Link href={"/create"} className="w-full sm:w-fit">
+              <Button className="bg-gradient-to-r w-full from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white md:w-auto gap-0 cursor-pointer">
                 Start creating now
+                <IconChevronRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Link
+              className="w-full sm:w-fit"
+              href={"https://github.com/TheSoumenMondal/picode"}
+            >
+              <Button variant={"outline"} className="group w-full sm:w-fit cursor-pointer">
+                <IconStarFilled className="w-4 h-4 group-hover:animate-spin text-yellow-400" />
+                Star on Github
               </Button>
             </Link>
           </motion.div>
@@ -126,16 +144,16 @@ export default function PiCodeLanding() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
           >
-            <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-xl shadow-lg max-w-md mx-auto">
+            <div className="bg-gradient-to-br from-stone-900/80 to-stone-950/80 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-xl shadow-lg max-w-md mx-auto">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex space-x-1">
                   <div className="w-3 h-3 bg-red-500 rounded-full shadow" />
                   <div className="w-3 h-3 bg-yellow-500 rounded-full shadow" />
                   <div className="w-3 h-3 bg-green-500 rounded-full shadow" />
                 </div>
-                <div className="text-xs text-gray-500 bg-gray-800/80 px-2 py-1 rounded-full">
+                <Badge className="text-xs" variant={"secondary"}>
                   snippet.js
-                </div>
+                </Badge>
               </div>
               <pre className="text-sm font-mono text-left space-y-1 text-gray-300">
                 <div>

@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import * as htmlToImage from "html-to-image";
 
 const CreatePage: React.FC = () => {
+
+
   const { outerBackground, padding, roundness, showBackground, title } =
     useThemeStore();
   const imageRef = useRef<HTMLDivElement>(null);
