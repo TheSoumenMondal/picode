@@ -46,6 +46,7 @@ const CodeEditor = () => {
     lineNumber,
     code,
     setCode,
+    dots,
   } = useThemeStore();
 
   const [backgroundColor, setBackGroundColor] = useState<string>("#1e1e1e");
@@ -116,9 +117,21 @@ const CodeEditor = () => {
     >
       <header className="grid grid-cols-6 gap-3 items-center px-4 py-3">
         <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-          <div className="w-3 h-3 rounded-full bg-green-500" />
+          <div
+            className={`w-3 h-3 rounded-full ${
+              dots ? "bg-red-500" : "bg-transparent"
+            }`}
+          />
+          <div
+            className={`w-3 h-3 rounded-full ${
+              dots ? "bg-yellow-500" : "bg-transparent"
+            }`}
+          />
+          <div
+            className={`w-3 h-3 rounded-full ${
+              dots ? "bg-green-500" : "bg-transparent"
+            }`}
+          />
         </div>
         <div className="col-span-4 flex justify-center">
           <input
@@ -137,10 +150,12 @@ const CodeEditor = () => {
       <div className="px-4 pb-4" ref={editorRef}>
         <CodeMirror
           theme={editorTheme}
-          value={code}
+          value={code === "" ? 'print("Hello World!")' : code}
           onChange={debouncedSaveCode}
           extensions={[
-            loadLanguage(language as any) as any,
+            loadLanguage(
+              language === "plaintext" ? "javascript" : (language as any)
+            ) as any,
             EditorView.lineWrapping,
             EditorView.theme({
               "&": {

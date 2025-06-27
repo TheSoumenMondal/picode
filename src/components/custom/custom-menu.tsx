@@ -18,7 +18,7 @@ import { RoundnessSlider } from "./roundness-slider";
 import ButtonGroup from "./button-group";
 import { Button } from "../ui/button";
 
-const CustomMenu = () => {
+const CustomMenu = ({ onDownloadImage }: { onDownloadImage: any }) => {
   const {
     language,
     setLanguage,
@@ -26,7 +26,23 @@ const CustomMenu = () => {
     setBackgroundTheme,
     outerBackground,
     setOuterBackground,
+    setDots,
+    setLineNumbers,
   } = useThemeStore();
+
+  const handleClick = () => {
+    const bg = Backgrounds.find((bg) => bg.name === "Peach Sunset");
+
+    if (bg) {
+      setLanguage("javascript");
+      setBackgroundTheme("vscodeDark");
+      setOuterBackground(bg);
+      setDots(true);
+      setLineNumbers(true);
+    } else {
+      console.warn("Background not found");
+    }
+  };
 
   return (
     <div className="w-full max-w-3xl rounded-t-md border backdrop-blur-lg p-4 grid grid-cols-5 gap-4 shadow-md select-none">
@@ -55,7 +71,13 @@ const CustomMenu = () => {
       {/* Background */}
       <div className="flex flex-col gap-2 items-start">
         <p className="text-xs font-medium">Background</p>
-        <Select value={outerBackground} onValueChange={setOuterBackground}>
+        <Select
+          value={outerBackground.name}
+          onValueChange={(name) => {
+            const bg = Backgrounds.find((b) => b.name === name);
+            if (bg) setOuterBackground(bg);
+          }}
+        >
           <SelectTrigger
             size="sm"
             className="text-sm px-3 py-2 rounded-md bg-background hover:bg-accent border"
@@ -65,8 +87,8 @@ const CustomMenu = () => {
           <SelectContent>
             <SelectGroup>
               {Backgrounds.map((bg, idx) => (
-                <SelectItem key={idx} value={bg.value}>
-                  <div className="flex items-center gap-0.5">
+                <SelectItem key={idx} value={bg.name}>
+                  <div className="flex items-center gap-1.5">
                     <div
                       className="w-4 h-4 rounded-full border"
                       style={{ background: bg.value }}
@@ -115,17 +137,27 @@ const CustomMenu = () => {
         </div>
       </div>
 
-      {/* Export Buttons */}
+      {/* Export + Reset Buttons */}
       <div className="w-full flex flex-col row-span-2 h-full items-center justify-center gap-3">
-        <Button size="sm" className="cursor-pointer w-full" variant="secondary">
+        <Button
+          onClick={onDownloadImage}
+          size="sm"
+          className="cursor-pointer w-full"
+          variant="secondary"
+        >
           Export
         </Button>
-        <Button size="sm" className="cursor-pointer w-full" variant="secondary">
+        <Button
+          onClick={handleClick}
+          size="sm"
+          className="cursor-pointer w-full"
+          variant="secondary"
+        >
           Reset
         </Button>
       </div>
 
-      {/* Line Number Toggle */}
+      {/* Toggle Group */}
       <div className="flex items-center gap-3 col-span-3">
         <ButtonGroup />
       </div>
